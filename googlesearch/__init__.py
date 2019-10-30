@@ -191,7 +191,7 @@ def filter_result(link):
 
 # Returns a generator that yields URLs.
 def search(query, tld='com', lang='en', tbs='0', safe='off', num=10, start=0,
-           stop=None, domains=None, pause=2.0, only_standard=False,
+           stop=None, domains=None, pause=2.0, only_standard=False, proxy=None,
            extra_params={}, tpe='', user_agent=None):
     """
     Search the given query string using Google.
@@ -254,7 +254,7 @@ def search(query, tld='com', lang='en', tbs='0', safe='off', num=10, start=0,
             )
 
     # Grab the cookie from the home page.
-    get_page(url_home % vars(), user_agent)
+    get_page(proxy + url_home % vars(), user_agent)
 
     # Prepare the URL of the first request.
     if start:
@@ -285,7 +285,7 @@ def search(query, tld='com', lang='en', tbs='0', safe='off', num=10, start=0,
         time.sleep(pause)
 
         # Request the Google Search results page.
-        html = get_page(url, user_agent)
+        html = get_page(proxy + url, user_agent)
 
         # Parse the response and process every anchored URL.
         if is_bs4:
@@ -350,7 +350,7 @@ def search(query, tld='com', lang='en', tbs='0', safe='off', num=10, start=0,
 # Beware, this does not return the image link.
 def search_images(query, tld='com', lang='en', tbs='0', safe='off', num=10,
                   start=0, stop=None, pause=2.0, domains=None,
-                  only_standard=False, extra_params={}):
+                  only_standard=False, proxy=None, extra_params={}):
     """
     Shortcut to search images.
 
@@ -390,13 +390,13 @@ def search_images(query, tld='com', lang='en', tbs='0', safe='off', num=10,
         If the stop parameter is None the iterator will loop forever.
     """
     return search(query, tld, lang, tbs, safe, num, start, stop, domains,
-                  pause, only_standard, extra_params, tpe='isch')
+                  pause, only_standard, proxy, extra_params, tpe='isch')
 
 
 # Shortcut to search news.
 def search_news(query, tld='com', lang='en', tbs='0', safe='off', num=10,
                 start=0, stop=None, domains=None, pause=2.0,
-                only_standard=False, extra_params={}):
+                only_standard=False, proxy=None, extra_params={}):
     """
     Shortcut to search news.
 
@@ -434,13 +434,13 @@ def search_news(query, tld='com', lang='en', tbs='0', safe='off', num=10,
         If the stop parameter is None the iterator will loop forever.
     """
     return search(query, tld, lang, tbs, safe, num, start, stop, domains,
-                  pause, only_standard, extra_params, tpe='nws')
+                  pause, only_standard, proxy, extra_params, tpe='nws')
 
 
 # Shortcut to search videos.
 def search_videos(query, tld='com', lang='en', tbs='0', safe='off', num=10,
                   start=0, stop=None, domains=None, pause=2.0,
-                  only_standard=False, extra_params={}):
+                  only_standard=False, proxy=None, extra_params={}):
     """
     Shortcut to search videos.
 
@@ -478,13 +478,13 @@ def search_videos(query, tld='com', lang='en', tbs='0', safe='off', num=10,
         If the stop parameter is None the iterator will loop forever.
     """
     return search(query, tld, lang, tbs, safe, num, start, stop, domains,
-                  pause, only_standard, extra_params, tpe='vid')
+                  pause, only_standard, proxy, extra_params, tpe='vid')
 
 
 # Shortcut to search shop.
 def search_shop(query, tld='com', lang='en', tbs='0', safe='off', num=10,
                 start=0, stop=None, domains=None, pause=2.0,
-                only_standard=False, extra_params={}):
+                only_standard=False, proxy=None, extra_params={}):
     """
     Shortcut to search shop.
 
@@ -522,13 +522,13 @@ def search_shop(query, tld='com', lang='en', tbs='0', safe='off', num=10,
         If the stop parameter is None the iterator will loop forever.
     """
     return search(query, tld, lang, tbs, safe, num, start, stop, domains,
-                  pause, only_standard, extra_params, tpe='shop')
+                  pause, only_standard, proxy, extra_params, tpe='shop')
 
 
 # Shortcut to search books.
 def search_books(query, tld='com', lang='en', tbs='0', safe='off', num=10,
                  start=0, stop=None, domains=None, pause=2.0,
-                 only_standard=False, extra_params={}):
+                 only_standard=False, proxy=None, extra_params={}):
     """
     Shortcut to search books.
 
@@ -566,13 +566,13 @@ def search_books(query, tld='com', lang='en', tbs='0', safe='off', num=10,
         If the stop parameter is None the iterator will loop forever.
     """
     return search(query, tld, lang, tbs, safe, num, start, stop, domains,
-                  pause, only_standard, extra_params, tpe='bks')
+                  pause, only_standard, proxy, extra_params, tpe='bks')
 
 
 # Shortcut to search apps.
 def search_apps(query, tld='com', lang='en', tbs='0', safe='off', num=10,
                 start=0, stop=None, domains=None, pause=2.0,
-                only_standard=False, extra_params={}):
+                only_standard=False, proxy=None, extra_params={}):
     """
     Shortcut to search apps.
 
@@ -610,13 +610,13 @@ def search_apps(query, tld='com', lang='en', tbs='0', safe='off', num=10,
         If the stop parameter is None the iterator will loop forever.
     """
     return search(query, tld, lang, tbs, safe, num, start, stop, domains,
-                  pause, only_standard, extra_params, tpe='app')
+                  pause, only_standard, proxy, extra_params, tpe='app')
 
 
 # Shortcut to single-item search.
 # Evaluates the iterator to return the single URL as a string.
 def lucky(query, tld='com', lang='en', tbs='0', safe='off',
-          only_standard=False, extra_params={}, tpe=''):
+          only_standard=False, proxy=None, extra_params={}, tpe=''):
     """
     Shortcut to single-item search.
 
@@ -653,14 +653,14 @@ def lucky(query, tld='com', lang='en', tbs='0', safe='off',
     :return: URL found by Google.
     """
     gen = search(query, tld, lang, tbs, safe, 1, 0, 1, 0., only_standard,
-                 extra_params, tpe)
+                 proxy, extra_params, tpe)
     return next(gen)
 
 
 # Returns only the number of Google hits for the given search query.
 # This is the number reported by Google itself, NOT by scraping.
 def hits(query, tld='com', lang='en', tbs='0', safe='off',
-         domains=None, extra_params={}, tpe='', user_agent=None):
+         domains=None, proxy=None, extra_params={}, tpe='', user_agent=None):
     """
     Search the given query string using Google and return the number of hits.
 
@@ -719,7 +719,7 @@ def hits(query, tld='com', lang='en', tbs='0', safe='off',
             )
 
     # Grab the cookie from the home page.
-    get_page(url_home % vars(), user_agent)
+    get_page(proxy + url_home % vars(), user_agent)
 
     # Prepare the URL of the first (and in this cases ONLY) request.
     url = url_search % vars()
@@ -733,7 +733,8 @@ def hits(query, tld='com', lang='en', tbs='0', safe='off',
         url += url + ('&%s=%s' % (k, v))
 
     # Request the Google Search results page.
-    html = get_page(url, user_agent)
+    print(proxy + url)
+    html = get_page(proxy + url, user_agent)
 
     # Parse the response.
     if is_bs4:
