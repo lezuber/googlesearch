@@ -1,3 +1,6 @@
+Fork details:
+added a proxy url prefix parameter
+
 googlesearch
 ============
 
@@ -16,4 +19,4 @@ Usage example
 Installing
 ----------
 
-    pip install google
+    pip install -e path/to/SomePackage
